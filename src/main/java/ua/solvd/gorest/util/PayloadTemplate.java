@@ -11,14 +11,14 @@ public class PayloadTemplate {
     }
 
     public static UserPayload getValidUser() {
-        return new UserPayload(Constant.DEFAULT_USERNAME, generateUniqueEmail(), Constant.MALE_GENDER, Constant.STATUS_ACTIVE);
+        return new UserPayload(null, Constant.DEFAULT_USERNAME, generateUniqueEmail(), Constant.MALE_GENDER, Constant.STATUS_ACTIVE);
     }
 
     public static UserPayload getValidUserWithSpecificName(String name) {
-        return new UserPayload(name, generateUniqueEmail(), Constant.FEMALE_GENDER, Constant.STATUS_ACTIVE);
+        return new UserPayload(null, name, generateUniqueEmail(), Constant.FEMALE_GENDER, Constant.STATUS_ACTIVE);
     }
 
     public static UserPayload getUserWithInvalidEmail() {
-        return new UserPayload(Constant.INVALID_USERNAME, Constant.INVALID_EMAIL, Constant.MALE_GENDER, Constant.STATUS_ACTIVE);
+        return new UserPayload(null, Constant.INVALID_USERNAME, Constant.INVALID_EMAIL, Constant.MALE_GENDER, Constant.STATUS_ACTIVE);
     }
 }

@@ -11,4 +11,5 @@ public class Constant {
     public static final String STATUS_ACTIVE = "active";
     public static final String DEFAULT_EMAIL = "@example.com";
     public static final String INVALID_EMAIL = "Invalid Email Address";
+    public static final String ENDPOINT = "/users";
 }

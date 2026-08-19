@@ -25,13 +25,11 @@
             <groupId>io.rest-assured</groupId>
             <artifactId>rest-assured</artifactId>
             <version>6.0.1</version>
-            <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>3.2.1</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
 
