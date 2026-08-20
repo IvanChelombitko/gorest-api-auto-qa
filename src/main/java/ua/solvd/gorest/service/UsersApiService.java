@@ -7,6 +7,7 @@ import tools.jackson.databind.ObjectMapper;
 import ua.solvd.gorest.constant.Constant;
 import ua.solvd.gorest.model.ApiResponse;
 import ua.solvd.gorest.model.GenericError;
+import ua.solvd.gorest.model.PostPayload;
 import ua.solvd.gorest.model.UserPayload;
 import ua.solvd.gorest.model.ValidationError;
 
@@ -15,7 +16,6 @@ import java.util.Map;
 import static io.restassured.RestAssured.given;
 
 public class UsersApiService {
-
     private final RequestSpecification authSpec;
     private final RequestSpecification unAuthSpec;
     private final ObjectMapper mapper;
@@ -27,15 +27,15 @@ public class UsersApiService {
     }
 
     public ApiResponse<UserPayload> createUser(UserPayload user) {
-        return sendPostRequest(authSpec, user, UserPayload.class);
+        return sendPostRequest(authSpec, Constant.ENDPOINT, user, UserPayload.class);
     }
 
     public ApiResponse<ValidationError[]> createUserExpectingValidationError(UserPayload user) {
-        return sendPostRequest(authSpec, user, ValidationError[].class);
+        return sendPostRequest(authSpec, Constant.ENDPOINT, user, ValidationError[].class);
     }
 
     public ApiResponse<GenericError> createUserUnauthorized(UserPayload user) {
-        return sendPostRequest(unAuthSpec, user, GenericError.class);
+        return sendPostRequest(unAuthSpec, Constant.ENDPOINT, user, GenericError.class);
     }
 
     public ApiResponse<UserPayload[]> getUsersList() {
@@ -59,11 +59,13 @@ public class UsersApiService {
     }
 
     public ApiResponse<UserPayload> updateUserPut(int userId, UserPayload user) {
-        return sendPutRequest(authSpec, userId, user, UserPayload.class);
+        String path = Constant.ENDPOINT + "/" + userId;
+        return sendPutRequest(authSpec, path, user, UserPayload.class);
     }
 
     public ApiResponse<UserPayload> updateUserPatch(int userId, Map<String, String> patchData) {
-        return sendPatchRequest(authSpec, userId, patchData, UserPayload.class);
+        String path = Constant.ENDPOINT + "/" + userId;
+        return sendPatchRequest(authSpec, path, patchData, UserPayload.class);
     }
 
     public ApiResponse<Void> deleteUser(int userId) {
@@ -71,33 +73,38 @@ public class UsersApiService {
         return new ApiResponse<>(response.statusCode(), null, response.headers());
     }
 
-    private <T> ApiResponse<T> sendPostRequest(RequestSpecification spec, Object payload, Class<T> responseClass) {
+    public ApiResponse<PostPayload> createPost(int userId, PostPayload post) {
+        String path = Constant.ENDPOINT + "/" + userId + Constant.ENDPOINT_POSTS;
+        return sendPostRequest(authSpec, path, post, PostPayload.class);
+    }
+
+    private <T> ApiResponse<T> sendPostRequest(RequestSpecification spec, String path, Object payload, Class<T> responseClass) {
         try {
             String jsonBody = mapper.writeValueAsString(payload);
-            Response response = given().spec(spec).body(jsonBody).when().post(Constant.ENDPOINT);
+            Response response = given().spec(spec).body(jsonBody).when().post(path);
             return parseResponse(response, responseClass);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize payload or send POST request", e);
+            throw new RuntimeException("Failed to serialize payload or send POST request to " + path, e);
         }
     }
 
-    private <T> ApiResponse<T> sendPutRequest(RequestSpecification spec, int id, Object payload, Class<T> responseClass) {
+    private <T> ApiResponse<T> sendPutRequest(RequestSpecification spec, String path, Object payload, Class<T> responseClass) {
         try {
             String jsonBody = mapper.writeValueAsString(payload);
-            Response response = given().spec(spec).body(jsonBody).when().put(Constant.ENDPOINT + "/" + id);
+            Response response = given().spec(spec).body(jsonBody).when().put(path);
             return parseResponse(response, responseClass);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize payload or send PUT request", e);
+            throw new RuntimeException("Failed to serialize payload or send PUT request to " + path, e);
         }
     }
 
-    private <T> ApiResponse<T> sendPatchRequest(RequestSpecification spec, int id, Object payload, Class<T> responseClass) {
+    private <T> ApiResponse<T> sendPatchRequest(RequestSpecification spec, String path, Object payload, Class<T> responseClass) {
         try {
             String jsonBody = mapper.writeValueAsString(payload);
-            Response response = given().spec(spec).body(jsonBody).when().patch(Constant.ENDPOINT + "/" + id);
+            Response response = given().spec(spec).body(jsonBody).when().patch(path);
             return parseResponse(response, responseClass);
         } catch (Exception e) {
-            throw new RuntimeException("Failed to serialize payload or send PATCH request", e);
+            throw new RuntimeException("Failed to serialize payload or send PATCH request to " + path, e);
         }
     }
 

@@ -1,6 +1,7 @@
 package ua.solvd.gorest.util;
 
 import ua.solvd.gorest.constant.Constant;
+import ua.solvd.gorest.model.PostPayload;
 import ua.solvd.gorest.model.UserPayload;
 
 import java.util.UUID;
@@ -20,5 +21,9 @@ public class PayloadTemplate {
 
     public static UserPayload getUserWithInvalidEmail() {
         return new UserPayload(null, Constant.INVALID_USERNAME, Constant.INVALID_EMAIL, Constant.MALE_GENDER, Constant.STATUS_ACTIVE);
+    }
+
+    public static PostPayload getValidPost(int userId) {
+        return new PostPayload(null, userId, Constant.POST_TITLE, Constant.POST_BODY);
     }
 }

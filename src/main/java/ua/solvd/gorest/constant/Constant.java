@@ -12,4 +12,8 @@ public class Constant {
     public static final String DEFAULT_EMAIL = "@example.com";
     public static final String INVALID_EMAIL = "Invalid Email Address";
     public static final String ENDPOINT = "/users";
+    public static final String ENDPOINT_POSTS = "/posts";
+    public static final String GRAPHQL_ENDPOINT = "/graphql";
+    public static final String POST_TITLE = "Automated Test Title";
+    public static final String POST_BODY = "Automated test body content for GraphQL testing.";
 }

@@ -9,6 +9,7 @@ import tools.jackson.databind.ObjectMapper;
 import ua.solvd.gorest.constant.Constant;
 import ua.solvd.gorest.model.ApiResponse;
 import ua.solvd.gorest.model.UserPayload;
+import ua.solvd.gorest.service.GraphqlApiService;
 import ua.solvd.gorest.service.UsersApiService;
 import ua.solvd.gorest.util.PayloadTemplate;
 import ua.solvd.gorest.util.TokenUtil;
@@ -18,6 +19,7 @@ public class BaseTest {
     protected RequestSpecification unAuthRequestSpec;
     protected ObjectMapper mapper;
     protected UsersApiService apiService;
+    protected GraphqlApiService graphqlService;
 
     @BeforeMethod
     public void setupConfig() {
@@ -33,6 +35,7 @@ public class BaseTest {
                 .setContentType(ContentType.JSON)
                 .build();
         apiService = new UsersApiService(authRequestSpec, unAuthRequestSpec);
+        graphqlService = new GraphqlApiService(authRequestSpec, unAuthRequestSpec);
     }
 
     private ApiResponse<UserPayload> createTemporaryUser() {
