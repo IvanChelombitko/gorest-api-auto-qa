@@ -1,0 +1,8 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="GoREST API Test Suite" verbose="1">
+    <test name="Users REST API Tests">
+        <packages>
+            <package name="ua.solvd.gorest"/>
+        </packages>
+    </test>
+</suite>
